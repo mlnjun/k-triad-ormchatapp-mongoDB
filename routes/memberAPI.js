@@ -148,9 +148,9 @@ router.post('/find', async function (req, res) {
   };
 
   try {
-    const { name, email, birth_date, telephone } = req.body;
+    const { name, email, telephone } = req.body;
 
-    const member = await Member.findOne({ name, email, birth_date, telephone });
+    const member = await Member.findOne({ name, email, telephone });
 
     if (member) {
       apiResult.code = 200;

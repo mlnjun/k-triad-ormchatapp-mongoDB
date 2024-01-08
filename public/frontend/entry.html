@@ -114,6 +114,7 @@
     <script>
       const entryForm = document.getElementById('entryForm');
       const birth_dateInput = document.getElementById('birth_date');
+      const emailInput = document.getElementById('email');
       const passwordInput = document.getElementById('member_password');
       const passwordConfirmInput = document.getElementById('password_confirm');
       const warningMsgInput = document.getElementById('warningMsg');
@@ -155,6 +156,7 @@
             window.location.href = '/frontend/login.html';
           } else if (result.code === 409) {
             alert('이미 가입되어있는 이메일입니다.');
+            emailInput.focus();
           } else if (result.code === 500) {
             alert('서버에러발생. 잠시 후 다시 시도해주십시오.');
           }
