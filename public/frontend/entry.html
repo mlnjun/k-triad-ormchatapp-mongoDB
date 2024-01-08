@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Meta -->
+    <meta name="description" content="Quick Chat App" />
+    <meta name="author" content="ParkerThemes" />
+    <link rel="shortcut icon" href="/img/fav.png" />
+
+    <!-- Title -->
+    <title>Quick Chat App</title>
+
+    <!-- *************
+			************ Common Css Files *************
+		************ -->
+    <!-- Bootstrap css -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="/css/main.css" />
+
+    <!-- *************
+			************ Vendor Css Files *************
+		************ -->
+  </head>
+  <body class="authentication">
+    <!-- *************
+			************ Login container start *************
+		************* -->
+    <div class="login-container">
+      <!-- Row start -->
+      <div class="row no-gutters h-100">
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+          <div class="login-about">
+            <div class="slogan">
+              <span>Design</span>
+              <span>Made</span>
+              <span>Simple.</span>
+            </div>
+            <div class="about-desc">
+              Quick Chat is an intelligent and communications tool, built for teams. It provides an integrated platform
+              that makes team communication easy and efficient.
+            </div>
+            <a href="index.html" class="know-more">Know More <img src="/img/right-arrow.svg" /></a>
+          </div>
+        </div>
+        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+          <div class="login-wrapper">
+            <form action="/entry" method="post" id="entryForm" onsubmit="return submitAfterFormCheck(event)">
+              <div class="login-screen">
+                <div class="login-body">
+                  <a href="index.html" class="login-logo">
+                    <img src="/img/logo.svg" alt="Quick Chat" />
+                  </a>
+                  <h6>Welcome to Quick Chat App,<br />Create your account.</h6>
+                  <div class="field-wrapper mb-3">
+                    <input type="text" name="name" id="name" required autofocus />
+                    <div class="field-placeholder">이름</div>
+                  </div>
+                  <div class="field-wrapper mb-3">
+                    <input type="text" name="telephone" id="telephone" required />
+                    <div class="field-placeholder">전화번호</div>
+                  </div>
+                  <div class="field-wrapper">
+                    <input type="email" name="email" id="email" required />
+                    <div class="field-placeholder">이메일</div>
+                  </div>
+                  <div class="field-wrapper mb-3">
+                    <input
+                      type="text"
+                      maxlength="6"
+                      name="birth_date"
+                      id="birth_date"
+                      placeholder="6자 입력 ex) 980127"
+                      required
+                    />
+                    <div class="field-placeholder">생년월일</div>
+                  </div>
+                  <div class="field-wrapper">
+                    <input type="password" name="member_password" id="member_password" required />
+                    <div class="field-placeholder">비밀번호</div>
+                  </div>
+                  <div class="field-wrapper mb-3">
+                    <input type="password" id="password_confirm" required />
+                    <div class="field-placeholder">비밀번호 확인</div>
+                  </div>
+                  <div class="field-wrapper mb-3">
+                    <input type="file" name="profile_img_path" />
+                    <div class="field-placeholder">프로필 사진</div>
+                  </div>
+                  <p id="warningMsg" style="color: rgb(255, 0, 0)"></p>
+                  <div class="actions">
+                    <button type="submit" class="btn btn-primary ml-auto">Sign Up</button>
+                  </div>
+                </div>
+                <div class="login-footer">
+                  <span class="additional-link"
+                    >Have an account? <a href="/login" class="btn btn-secondary">Login</a></span
+                  >
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <!-- Row end -->
+    </div>
+    <!-- *************
+			************ Login container end *************
+		************* -->
+    <script>
+      const entryForm = document.getElementById('entryForm');
+      const birth_dateInput = document.getElementById('birth_date');
+      const passwordInput = document.getElementById('member_password');
+      const passwordConfirmInput = document.getElementById('password_confirm');
+      const warningMsgInput = document.getElementById('warningMsg');
+
+      const submitAfterFormCheck = async (e) => {
+        e.preventDefault();
+
+        let warningMsg = '';
+
+        if (isNaN(Number(birth_dateInput.value))) {
+          warningMsg = '생년월일은 숫자 6자리로 입력해주세요.';
+          birth_dateInput.value = '';
+          birth_dateInput.focus();
+        } else if (passwordInput.value !== passwordConfirmInput.value) {
+          warningMsg = '비밀번호가 일치하지 않습니다.';
+          passwordConfirmInput.value = '';
+          passwordConfirmInput.focus();
+        } else {
+          const formData = new FormData(entryForm);
+          const response = await fetch('/api/member/entry', {
+            method: 'POST',
+            headers: {
+              Accept: 'application.json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              name: document.getElementById('name').value,
+              member_password: document.getElementById('member_password').value,
+              telephone: document.getElementById('telephone').value,
+              email: document.getElementById('email').value,
+              birth_date: document.getElementById('birth_date').value,
+            }),
+          });
+
+          const result = await response.json();
+
+          if (result.code === 200) {
+            alert('회원 가입이 완료되었습니다.');
+            window.location.href = '/frontend/login.html';
+          } else if (result.code === 409) {
+            alert('이미 가입되어있는 이메일입니다.');
+          } else if (result.code === 500) {
+            alert('서버에러발생. 잠시 후 다시 시도해주십시오.');
+          }
+        }
+
+        warningMsgInput.innerText = warningMsg;
+      };
+    </script>
+  </body>
+</html>
