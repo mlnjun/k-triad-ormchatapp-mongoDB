@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Member } = require('../models');
+const { Member } = require('../schemas/member');
 
 router.get('/login', (req, res) => {
   res.render('login', { title: '로그인' });
