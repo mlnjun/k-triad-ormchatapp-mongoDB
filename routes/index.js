@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Member } = require('../models');
+const Member = require('../schemas/member');
 
 router.get('/login', (req, res) => {
   res.render('login', { title: '로그인' });
@@ -43,7 +43,6 @@ router.post('/entry', async (req, res) => {
     res.status(500).send('내부 서버 오류');
   }
 });
-
 
 router.get('/find', (req, res) => {
   res.render('find', { title: '비밀번호 찾기' });

@@ -108,8 +108,9 @@
         const result = await response.json();
 
         if (result.code === 200) {
+          console.log(result);
           if (result.data) {
-            window.location.href = '/';
+            window.location.href = '/chat';
           } else {
             warningMsg = '이메일 또는 비밀번호를 잘못 입력하셨습니다.';
           }
