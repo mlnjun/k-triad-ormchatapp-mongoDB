@@ -5,9 +5,6 @@ const { Schema } = mongoose;
 const AutoIncrement = require("mongoose-sequence")(mongoose);
 
 const channel = new Schema({
-  channel_id: {
-    type: Number,
-  },
   community_id: {
     type: Number,
     required: true
@@ -41,7 +38,7 @@ const channel = new Schema({
   },
   reg_date: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
     required: true
   },
   edit_user_id: {
